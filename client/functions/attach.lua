@@ -11,9 +11,9 @@ function AttachExistingStretcherToPlayer(stretcherEntity)
     -- DEMANDER LE CONTRÔLE RÉSEAU DE L'ENTITÉ
     NetworkRequestControlOfEntity(stretcherEntity)
 
-    -- Attendre d'avoir le contrôle (avec timeout de 500ms)
+    -- Attendre d'avoir le contrôle (avec timeout configurable)
     local timeout = 0
-    while not NetworkHasControlOfEntity(stretcherEntity) and timeout < 50 do
+    while not NetworkHasControlOfEntity(stretcherEntity) and timeout < Config.NetworkTimeouts.stretcher do
         Wait(10)
         timeout = timeout + 1
     end

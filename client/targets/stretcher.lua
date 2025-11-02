@@ -105,9 +105,9 @@ exports.ox_target:addModel({Config.StretcherModel}, {
             -- DEMANDER LE CONTRÔLE RÉSEAU DE L'ENTITÉ
             NetworkRequestControlOfEntity(stretcher)
 
-            -- Attendre d'avoir le contrôle (avec timeout de 500ms)
+            -- Attendre d'avoir le contrôle (avec timeout configurable)
             local timeout = 0
-            while not NetworkHasControlOfEntity(stretcher) and timeout < 50 do
+            while not NetworkHasControlOfEntity(stretcher) and timeout < Config.NetworkTimeouts.stretcher do
                 Wait(10)
                 timeout = timeout + 1
             end
@@ -129,7 +129,7 @@ exports.ox_target:addModel({Config.StretcherModel}, {
                     -- Demander le contrôle du véhicule source
                     NetworkRequestControlOfEntity(sourceVehicle)
                     local sourceTimeout = 0
-                    while not NetworkHasControlOfEntity(sourceVehicle) and sourceTimeout < 20 do
+                    while not NetworkHasControlOfEntity(sourceVehicle) and sourceTimeout < Config.NetworkTimeouts.vehicle do
                         Wait(10)
                         sourceTimeout = sourceTimeout + 1
                     end
@@ -147,7 +147,7 @@ exports.ox_target:addModel({Config.StretcherModel}, {
                     -- Demander le contrôle du véhicule de stockage
                     NetworkRequestControlOfEntity(storedVehicle)
                     local storedTimeout = 0
-                    while not NetworkHasControlOfEntity(storedVehicle) and storedTimeout < 20 do
+                    while not NetworkHasControlOfEntity(storedVehicle) and storedTimeout < Config.NetworkTimeouts.vehicle do
                         Wait(10)
                         storedTimeout = storedTimeout + 1
                     end

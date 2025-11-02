@@ -54,7 +54,7 @@ function StoreStretcherInVehicle(stretcher)
     -- Demander le contrôle réseau du véhicule pour modifier ses statebags
     NetworkRequestControlOfEntity(closestAmbulance)
     local vehicleTimeout = 0
-    while not NetworkHasControlOfEntity(closestAmbulance) and vehicleTimeout < 30 do
+    while not NetworkHasControlOfEntity(closestAmbulance) and vehicleTimeout < Config.NetworkTimeouts.vehicle do
         Wait(10)
         vehicleTimeout = vehicleTimeout + 1
     end
@@ -67,9 +67,9 @@ function StoreStretcherInVehicle(stretcher)
     -- DEMANDER LE CONTRÔLE RÉSEAU DE L'ENTITÉ
     NetworkRequestControlOfEntity(stretcher)
 
-    -- Attendre d'avoir le contrôle (avec timeout de 500ms)
+    -- Attendre d'avoir le contrôle (avec timeout configurable)
     local timeout = 0
-    while not NetworkHasControlOfEntity(stretcher) and timeout < 50 do
+    while not NetworkHasControlOfEntity(stretcher) and timeout < Config.NetworkTimeouts.stretcher do
         Wait(10)
         timeout = timeout + 1
     end
@@ -127,7 +127,7 @@ function StoreStretcherInVehicle(stretcher)
                 -- Même véhicule : libérer le véhicule (le brancard est rentré chez lui)
                 NetworkRequestControlOfEntity(sourceVehicle)
                 local sourceTimeout = 0
-                while not NetworkHasControlOfEntity(sourceVehicle) and sourceTimeout < 20 do
+                while not NetworkHasControlOfEntity(sourceVehicle) and sourceTimeout < Config.NetworkTimeouts.vehicle do
                     Wait(10)
                     sourceTimeout = sourceTimeout + 1
                 end

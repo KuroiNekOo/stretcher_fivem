@@ -22,7 +22,7 @@ exports.ox_target:addModel(ambulanceModels, {
             -- Demander le contrôle réseau du véhicule pour modifier ses statebags
             NetworkRequestControlOfEntity(vehicle)
             local timeout = 0
-            while not NetworkHasControlOfEntity(vehicle) and timeout < 30 do
+            while not NetworkHasControlOfEntity(vehicle) and timeout < Config.NetworkTimeouts.vehicle do
                 Wait(10)
                 timeout = timeout + 1
             end
@@ -46,7 +46,7 @@ exports.ox_target:addModel(ambulanceModels, {
                     -- Demander le contrôle réseau du brancard AVANT de modifier les statebags
                     NetworkRequestControlOfEntity(storedStretcher)
                     local timeout = 0
-                    while not NetworkHasControlOfEntity(storedStretcher) and timeout < 50 do
+                    while not NetworkHasControlOfEntity(storedStretcher) and timeout < Config.NetworkTimeouts.stretcher do
                         Wait(10)
                         timeout = timeout + 1
                     end

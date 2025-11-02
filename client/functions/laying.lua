@@ -9,9 +9,9 @@ function LayOnStretcher(stretcher)
     -- DEMANDER LE CONTRÔLE RÉSEAU DE L'ENTITÉ
     NetworkRequestControlOfEntity(stretcher)
 
-    -- Attendre d'avoir le contrôle (avec timeout de 500ms)
+    -- Attendre d'avoir le contrôle (avec timeout configurable)
     local timeout = 0
-    while not NetworkHasControlOfEntity(stretcher) and timeout < 50 do
+    while not NetworkHasControlOfEntity(stretcher) and timeout < Config.NetworkTimeouts.stretcher do
         Wait(10)
         timeout = timeout + 1
     end
@@ -92,7 +92,7 @@ function GetUpFromStretcher()
     -- Demander le contrôle du brancard pour modifier son statebag
     NetworkRequestControlOfEntity(layingStretcherObject)
     local timeout = 0
-    while not NetworkHasControlOfEntity(layingStretcherObject) and timeout < 30 do
+    while not NetworkHasControlOfEntity(layingStretcherObject) and timeout < Config.NetworkTimeouts.vehicle do
         Wait(10)
         timeout = timeout + 1
     end

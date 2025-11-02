@@ -13,6 +13,13 @@ Config.MaxDistanceToStore = 15.0
 -- Utilisé notamment pour poser un joueur sur un brancard
 Config.MaxDistanceToFindStretcher = 5.0
 
+-- Timeouts réseau (en nombre d'itérations, 1 itération = 10ms)
+-- Ajuster selon la qualité réseau du serveur
+Config.NetworkTimeouts = {
+    stretcher = 50,   -- Timeout pour contrôle brancard (500ms)
+    vehicle = 30      -- Timeout pour contrôle véhicule (300ms)
+}
+
 -- Animation quand le joueur pousse le brancard
 Config.PushAnimation = {
     dict = 'anim@heists@box_carry@',        -- Dictionnaire d'animation
