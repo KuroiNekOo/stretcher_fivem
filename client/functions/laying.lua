@@ -56,7 +56,14 @@ function LayOnStretcher(stretcher)
     end
 
     -- Attacher le joueur au brancard
-    AttachEntityToEntity(playerPed, stretcher, 0, 0.0, 0.0, 2.1, 0.0, 0.0, 90.0, false, false, false, false, 2, true)
+    AttachEntityToEntity(
+        playerPed,
+        stretcher,
+        0,
+        Config.LayingOffset.x, Config.LayingOffset.y, Config.LayingOffset.z,
+        Config.LayingRotation.x, Config.LayingRotation.y, Config.LayingRotation.z,
+        false, false, false, false, 2, true
+    )
 
     isLayingOnStretcher = true
     ESX.ShowNotification(_U('laying_on_stretcher'))

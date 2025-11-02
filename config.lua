@@ -20,6 +20,14 @@ Config.NetworkTimeouts = {
     vehicle = 30      -- Timeout pour contrôle véhicule (300ms)
 }
 
+-- Offsets pour l'attachement du brancard au joueur (quand il le porte)
+Config.CarryOffset = vector3(0.0, 1.5, -1.0)     -- Position X, Y, Z
+Config.CarryRotation = vector3(0.0, 0.0, -90.0)  -- Rotation pitch, roll, yaw
+
+-- Offsets pour l'attachement du joueur au brancard (quand il est couché)
+Config.LayingOffset = vector3(0.0, 0.0, 2.1)     -- Position X, Y, Z
+Config.LayingRotation = vector3(0.0, 0.0, 90.0)  -- Rotation pitch, roll, yaw
+
 -- Animation quand le joueur pousse le brancard
 Config.PushAnimation = {
     dict = 'anim@heists@box_carry@',        -- Dictionnaire d'animation

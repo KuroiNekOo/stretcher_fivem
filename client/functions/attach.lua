@@ -49,8 +49,15 @@ function AttachExistingStretcherToPlayer(stretcherEntity)
     )
 
     -- Attacher le brancard au joueur
-    -- Bone index 0 (châssis principal)
-    AttachEntityToEntity(stretcherObject, playerPed, -1, 0.0, 1.5, -1.0, 0.0, 0.0, -90.0, false, false, false, false, 2, true)
+    -- Bone index -1 (châssis principal)
+    AttachEntityToEntity(
+        stretcherObject,
+        playerPed,
+        -1,
+        Config.CarryOffset.x, Config.CarryOffset.y, Config.CarryOffset.z,
+        Config.CarryRotation.x, Config.CarryRotation.y, Config.CarryRotation.z,
+        false, false, false, false, 2, true
+    )
     isCarryingStretcher = true
 
     -- Jouer l'animation de poussée
@@ -90,7 +97,14 @@ function AttachStretcherToPlayer(vehicle)
         local vehicleNetId = NetworkGetNetworkIdFromEntity(vehicle)
         Entity(stretcherObject).state:set('sourceVehicleNetId', vehicleNetId, true)
 
-        AttachEntityToEntity(stretcherObject, playerPed, -1, 0.0, 1.5, -1.0, 0.0, 0.0, -90.0, false, false, false, false, 2, true)
+        AttachEntityToEntity(
+            stretcherObject,
+            playerPed,
+            -1,
+            Config.CarryOffset.x, Config.CarryOffset.y, Config.CarryOffset.z,
+            Config.CarryRotation.x, Config.CarryRotation.y, Config.CarryRotation.z,
+            false, false, false, false, 2, true
+        )
         isCarryingStretcher = true
 
         -- Jouer l'animation de poussée
