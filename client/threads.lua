@@ -1,3 +1,32 @@
+-- Nettoyer les statebags des véhicules au démarrage de la ressource
+CreateThread(function()
+    Wait(1000) -- Attendre que le client soit complètement chargé
+
+    -- Parcourir tous les véhicules pour réinitialiser les statebags
+    local vehicles = GetGamePool('CVehicle')
+    for _, vehicle in ipairs(vehicles) do
+        local vehicleModelHash = GetEntityModel(vehicle)
+
+        -- Vérifier si c'est un véhicule ambulance configuré
+        if ambulanceHashes[vehicleModelHash] then
+            -- Réinitialiser les statebags de ce véhicule
+            Entity(vehicle).state:set('hasStretcherOut', nil, true)
+            Entity(vehicle).state:set('storedStretcherNetId', nil, true)
+        end
+    end
+
+    -- Parcourir tous les objets pour nettoyer les brancards orphelins
+    local objects = GetGamePool('CObject')
+    for _, obj in ipairs(objects) do
+        if GetEntityModel(obj) == GetHashKey(Config.StretcherModel) then
+            -- Nettoyer les statebags du brancard
+            Entity(obj).state:set('sourceVehicleNetId', nil, true)
+            Entity(obj).state:set('storedInVehicleNetId', nil, true)
+            Entity(obj).state:set('occupiedByServerId', nil, true)
+        end
+    end
+end)
+
 -- Thread optimisé pour détecter la touche E
 CreateThread(function()
     while true do

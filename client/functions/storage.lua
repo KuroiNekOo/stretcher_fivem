@@ -120,21 +120,25 @@ function StoreStretcherInVehicle(stretcher)
     local vehicleNetId = Entity(stretcher).state.sourceVehicleNetId
     if vehicleNetId then
         local sourceVehicle = NetworkGetEntityFromNetworkId(vehicleNetId)
-        -- Libérer le véhicule source
+        -- Libérer le véhicule source SEULEMENT si on range dans le MÊME véhicule
         if sourceVehicle and DoesEntityExist(sourceVehicle) then
-            -- Demander le contrôle du véhicule source pour modifier son statebag
-            NetworkRequestControlOfEntity(sourceVehicle)
-            local sourceTimeout = 0
-            while not NetworkHasControlOfEntity(sourceVehicle) and sourceTimeout < 20 do
-                Wait(10)
-                sourceTimeout = sourceTimeout + 1
-            end
+            -- Vérifier si le véhicule source est le même que le véhicule de destination
+            if sourceVehicle == closestAmbulance then
+                -- Même véhicule : libérer le véhicule (le brancard est rentré chez lui)
+                NetworkRequestControlOfEntity(sourceVehicle)
+                local sourceTimeout = 0
+                while not NetworkHasControlOfEntity(sourceVehicle) and sourceTimeout < 20 do
+                    Wait(10)
+                    sourceTimeout = sourceTimeout + 1
+                end
 
-            Entity(sourceVehicle).state:set('hasStretcherOut', false, true)
+                Entity(sourceVehicle).state:set('hasStretcherOut', false, true)
+            end
+            -- Sinon : NE PAS libérer le véhicule source (le brancard est rangé ailleurs)
         end
     end
 
-    -- Marquer le véhicule actuel comme ayant un brancard rangé
+    -- Marquer le brancard actuel comme étant rangé dans ce véhicule
     local storedVehicleNetId = NetworkGetNetworkIdFromEntity(closestAmbulance)
     Entity(stretcher).state:set('storedInVehicleNetId', storedVehicleNetId, true)
 

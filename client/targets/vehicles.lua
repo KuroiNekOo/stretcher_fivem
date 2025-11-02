@@ -7,7 +7,13 @@ exports.ox_target:addModel(ambulanceModels, {
         canInteract = function(entity, distance, data)
           -- Vérifier si un brancard est déjà sorti de ce véhicule
           local hasStretcherOut = Entity(entity).state.hasStretcherOut or false
-          return not hasStretcherOut
+          -- Vérifier si un brancard est rangé dans ce véhicule
+          local storedStretcherNetId = Entity(entity).state.storedStretcherNetId
+
+          -- Afficher le target si:
+          -- 1. Aucun brancard n'est sorti (hasStretcherOut = false)
+          -- 2. OU un brancard est rangé dans ce véhicule (storedStretcherNetId existe)
+          return not hasStretcherOut or (storedStretcherNetId ~= nil)
         end,
         onSelect = function(data)
             local vehicle = data.entity
