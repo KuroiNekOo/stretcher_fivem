@@ -6,22 +6,9 @@ function LayOnStretcher(stretcher)
     local playerPed = PlayerPedId()
     local playerServerId = GetPlayerServerId(PlayerId())
 
-    -- DEMANDER LE CONTRÔLE RÉSEAU DE L'ENTITÉ
-    NetworkRequestControlOfEntity(stretcher)
-
-    -- Attendre d'avoir le contrôle (avec timeout configurable)
-    local timeout = 0
-    while not NetworkHasControlOfEntity(stretcher) and timeout < Config.NetworkTimeouts.stretcher do
-        Wait(10)
-        timeout = timeout + 1
-    end
-
-    -- Vérifier qu'on a bien obtenu le contrôle
-    if not NetworkHasControlOfEntity(stretcher) then
-        ESX.ShowNotification(_U('no_network_control'))
+    -- Demander le contrôle réseau du brancard
+    if not RequestEntityControl(stretcher, Config.NetworkTimeouts.stretcher) then
         return
-    else
-        ESX.ShowNotification(_U('network_control_success'))
     end
 
     -- Marquer le brancard comme occupé
@@ -96,13 +83,8 @@ function GetUpFromStretcher()
     local offsetX = 1.5 * math.cos(math.rad(stretcherHeading - 90))
     local offsetY = 1.5 * math.sin(math.rad(stretcherHeading - 90))
 
-    -- Demander le contrôle du brancard pour modifier son statebag
-    NetworkRequestControlOfEntity(layingStretcherObject)
-    local timeout = 0
-    while not NetworkHasControlOfEntity(layingStretcherObject) and timeout < Config.NetworkTimeouts.vehicle do
-        Wait(10)
-        timeout = timeout + 1
-    end
+    -- Demander le contrôle du brancard pour modifier son statebag (sans notification)
+    local hasControl = RequestEntityControl(layingStretcherObject, Config.NetworkTimeouts.vehicle)
 
     -- Détacher le joueur du brancard (toujours, même sans contrôle pour ne pas bloquer le joueur)
     DetachEntity(playerPed, true, false)
@@ -114,7 +96,7 @@ function GetUpFromStretcher()
     SetEntityCoords(playerPed, stretcherCoords.x + offsetX, stretcherCoords.y + offsetY, stretcherCoords.z, false, false, false, true)
 
     -- Libérer le brancard seulement si on a le contrôle réseau
-    if NetworkHasControlOfEntity(layingStretcherObject) then
+    if hasControl then
         Entity(layingStretcherObject).state:set('occupiedByServerId', nil, true)
     end
 

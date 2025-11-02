@@ -51,35 +51,15 @@ function StoreStretcherInVehicle(stretcher)
         return
     end
 
-    -- Demander le contrôle réseau du véhicule pour modifier ses statebags
-    NetworkRequestControlOfEntity(closestAmbulance)
-    local vehicleTimeout = 0
-    while not NetworkHasControlOfEntity(closestAmbulance) and vehicleTimeout < Config.NetworkTimeouts.vehicle do
-        Wait(10)
-        vehicleTimeout = vehicleTimeout + 1
-    end
-
-    -- Note: On continue même sans contrôle du véhicule (tolérant pour les véhicules)
+    -- Demander le contrôle réseau du véhicule (sans notification, on continue même sans contrôle)
+    RequestEntityControl(closestAmbulance, Config.NetworkTimeouts.vehicle)
 
     -- Définir l'entité comme mission pour pouvoir la gérer
     SetEntityAsMissionEntity(stretcher, true, true)
 
-    -- DEMANDER LE CONTRÔLE RÉSEAU DE L'ENTITÉ
-    NetworkRequestControlOfEntity(stretcher)
-
-    -- Attendre d'avoir le contrôle (avec timeout configurable)
-    local timeout = 0
-    while not NetworkHasControlOfEntity(stretcher) and timeout < Config.NetworkTimeouts.stretcher do
-        Wait(10)
-        timeout = timeout + 1
-    end
-
-    -- Vérifier qu'on a bien obtenu le contrôle
-    if not NetworkHasControlOfEntity(stretcher) then
-        ESX.ShowNotification(_U('no_network_control'))
+    -- Demander le contrôle réseau du brancard
+    if not RequestEntityControl(stretcher, Config.NetworkTimeouts.stretcher) then
         return
-    else
-        ESX.ShowNotification(_U('network_control_success'))
     end
 
     -- Si le joueur porte le brancard, le détacher d'abord
@@ -125,14 +105,9 @@ function StoreStretcherInVehicle(stretcher)
             -- Vérifier si le véhicule source est le même que le véhicule de destination
             if sourceVehicle == closestAmbulance then
                 -- Même véhicule : libérer le véhicule (le brancard est rentré chez lui)
-                NetworkRequestControlOfEntity(sourceVehicle)
-                local sourceTimeout = 0
-                while not NetworkHasControlOfEntity(sourceVehicle) and sourceTimeout < Config.NetworkTimeouts.vehicle do
-                    Wait(10)
-                    sourceTimeout = sourceTimeout + 1
+                if RequestEntityControl(sourceVehicle, Config.NetworkTimeouts.vehicle) then
+                    Entity(sourceVehicle).state:set('hasStretcherOut', false, true)
                 end
-
-                Entity(sourceVehicle).state:set('hasStretcherOut', false, true)
             end
             -- Sinon : NE PAS libérer le véhicule source (le brancard est rangé ailleurs)
         end

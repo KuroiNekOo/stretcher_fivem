@@ -20,20 +20,9 @@ exports.ox_target:addModel(ambulanceModels, {
             if not vehicle or not DoesEntityExist(vehicle) then return end
 
             -- Demander le contrôle réseau du véhicule pour modifier ses statebags
-            NetworkRequestControlOfEntity(vehicle)
-            local timeout = 0
-            while not NetworkHasControlOfEntity(vehicle) and timeout < Config.NetworkTimeouts.vehicle do
-                Wait(10)
-                timeout = timeout + 1
-            end
-
-            if not NetworkHasControlOfEntity(vehicle) then
-                ESX.ShowNotification(_U('no_vehicle_control'))
+            if not RequestEntityControl(vehicle, Config.NetworkTimeouts.vehicle) then
                 return
             end
-
-            -- Note: On continue même sans contrôle du véhicule, car les statebags de véhicules
-            -- sont généralement synchronisés même sans contrôle strict
 
             -- Vérifier si un brancard est déjà rangé dans ce véhicule
             local storedStretcherNetId = Entity(vehicle).state.storedStretcherNetId
@@ -44,15 +33,7 @@ exports.ox_target:addModel(ambulanceModels, {
 
                 if storedStretcher and DoesEntityExist(storedStretcher) then
                     -- Demander le contrôle réseau du brancard AVANT de modifier les statebags
-                    NetworkRequestControlOfEntity(storedStretcher)
-                    local timeout = 0
-                    while not NetworkHasControlOfEntity(storedStretcher) and timeout < Config.NetworkTimeouts.stretcher do
-                        Wait(10)
-                        timeout = timeout + 1
-                    end
-
-                    if not NetworkHasControlOfEntity(storedStretcher) then
-                        ESX.ShowNotification(_U('no_stored_stretcher_control'))
+                    if not RequestEntityControl(storedStretcher, Config.NetworkTimeouts.stretcher) then
                         return
                     end
 

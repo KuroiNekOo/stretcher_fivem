@@ -102,22 +102,9 @@ exports.ox_target:addModel({Config.StretcherModel}, {
             -- Ceci est nécessaire quand ça concerne des entités réseau SEULEMENT
             SetEntityAsMissionEntity(stretcher, true, true)
 
-            -- DEMANDER LE CONTRÔLE RÉSEAU DE L'ENTITÉ
-            NetworkRequestControlOfEntity(stretcher)
-
-            -- Attendre d'avoir le contrôle (avec timeout configurable)
-            local timeout = 0
-            while not NetworkHasControlOfEntity(stretcher) and timeout < Config.NetworkTimeouts.stretcher do
-                Wait(10)
-                timeout = timeout + 1
-            end
-
-            -- Vérifier qu'on a bien obtenu le contrôle
-            if not NetworkHasControlOfEntity(stretcher) then
-                ESX.ShowNotification(_U('no_network_control'))
+            -- Demander le contrôle réseau du brancard
+            if not RequestEntityControl(stretcher, Config.NetworkTimeouts.stretcher) then
                 return
-            else
-                ESX.ShowNotification(_U('network_control_success'))
             end
 
             -- Récupérer le véhicule source depuis le statebag du brancard
@@ -127,14 +114,9 @@ exports.ox_target:addModel({Config.StretcherModel}, {
                 -- Libérer le véhicule source si il existe encore
                 if sourceVehicle and DoesEntityExist(sourceVehicle) then
                     -- Demander le contrôle du véhicule source
-                    NetworkRequestControlOfEntity(sourceVehicle)
-                    local sourceTimeout = 0
-                    while not NetworkHasControlOfEntity(sourceVehicle) and sourceTimeout < Config.NetworkTimeouts.vehicle do
-                        Wait(10)
-                        sourceTimeout = sourceTimeout + 1
+                    if RequestEntityControl(sourceVehicle, Config.NetworkTimeouts.vehicle) then
+                        Entity(sourceVehicle).state:set('hasStretcherOut', false, true)
                     end
-
-                    Entity(sourceVehicle).state:set('hasStretcherOut', false, true)
                 end
             end
 
@@ -145,14 +127,9 @@ exports.ox_target:addModel({Config.StretcherModel}, {
                 -- Nettoyer le statebag du véhicule de stockage
                 if storedVehicle and DoesEntityExist(storedVehicle) then
                     -- Demander le contrôle du véhicule de stockage
-                    NetworkRequestControlOfEntity(storedVehicle)
-                    local storedTimeout = 0
-                    while not NetworkHasControlOfEntity(storedVehicle) and storedTimeout < Config.NetworkTimeouts.vehicle do
-                        Wait(10)
-                        storedTimeout = storedTimeout + 1
+                    if RequestEntityControl(storedVehicle, Config.NetworkTimeouts.vehicle) then
+                        Entity(storedVehicle).state:set('storedStretcherNetId', nil, true)
                     end
-
-                    Entity(storedVehicle).state:set('storedStretcherNetId', nil, true)
                 end
             end
 

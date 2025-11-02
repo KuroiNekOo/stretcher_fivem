@@ -18,6 +18,7 @@ client_scripts {
     'client/variables.lua',           -- Variables globales et tables de hash
 
     -- Fonctions logiques
+    'client/functions/network.lua',
     'client/functions/animations.lua',
     'client/functions/attach.lua',
     'client/functions/laying.lua',

@@ -20,6 +20,11 @@ Config.NetworkTimeouts = {
     vehicle = 30      -- Timeout pour contrôle véhicule (300ms)
 }
 
+-- Afficher les notifications de succès/échec du contrôle réseau
+-- true = afficher les notifications (succès et échec)
+-- false = ne pas afficher les notifications
+Config.ShowNetworkControlNotifications = true
+
 -- Offsets pour l'attachement du brancard au joueur (quand il le porte)
 Config.CarryOffset = vector3(0.0, 1.5, -1.0)     -- Position X, Y, Z
 Config.CarryRotation = vector3(0.0, 0.0, -90.0)  -- Rotation pitch, roll, yaw

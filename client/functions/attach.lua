@@ -8,22 +8,9 @@ function AttachExistingStretcherToPlayer(stretcherEntity)
 
     local playerPed = PlayerPedId()
 
-    -- DEMANDER LE CONTRÔLE RÉSEAU DE L'ENTITÉ
-    NetworkRequestControlOfEntity(stretcherEntity)
-
-    -- Attendre d'avoir le contrôle (avec timeout configurable)
-    local timeout = 0
-    while not NetworkHasControlOfEntity(stretcherEntity) and timeout < Config.NetworkTimeouts.stretcher do
-        Wait(10)
-        timeout = timeout + 1
-    end
-
-    -- Vérifier qu'on a bien obtenu le contrôle
-    if not NetworkHasControlOfEntity(stretcherEntity) then
-        ESX.ShowNotification(_U('no_network_control'))
+    -- Demander le contrôle réseau du brancard
+    if not RequestEntityControl(stretcherEntity, Config.NetworkTimeouts.stretcher) then
         return
-    else
-        ESX.ShowNotification(_U('network_control_success'))
     end
 
     -- Définir l'entité comme mission pour pouvoir la gérer
