@@ -9,6 +9,10 @@ Config.StretcherModel = 'strykergurney'
 -- Distance maximale (en mètres) pour ranger le brancard dans un véhicule autorisé
 Config.MaxDistanceToStore = 15.0
 
+-- Distance maximale (en mètres) pour trouver un brancard libre lors de l'interaction avec un joueur
+-- Utilisé notamment pour poser un joueur sur un brancard
+Config.MaxDistanceToFindStretcher = 5.0
+
 -- Animation quand le joueur pousse le brancard
 Config.PushAnimation = {
     dict = 'anim@heists@box_carry@',        -- Dictionnaire d'animation

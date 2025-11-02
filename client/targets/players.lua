@@ -13,7 +13,7 @@ exports.ox_target:addGlobalPlayer({
                     local stretcherCoords = GetEntityCoords(stretcherData)
                     local dist = #(playerCoords - stretcherCoords)
 
-                    if dist <= 5.0 then
+                    if dist <= Config.MaxDistanceToFindStretcher then
                         -- Vérifier que le brancard n'est pas rangé
                         local isStored = Entity(stretcherData).state.storedInVehicleNetId ~= nil
 
@@ -36,7 +36,7 @@ exports.ox_target:addGlobalPlayer({
             -- Trouver le brancard le plus proche
             local playerCoords = GetEntityCoords(PlayerPedId())
             local closestStretcher = nil
-            local closestDistance = 5.0
+            local closestDistance = Config.MaxDistanceToFindStretcher
 
             for _, stretcherData in pairs(GetGamePool('CObject')) do
                 if GetEntityModel(stretcherData) == GetHashKey(Config.StretcherModel) then
