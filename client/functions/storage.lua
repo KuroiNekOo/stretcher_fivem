@@ -38,7 +38,7 @@ function StoreStretcherInVehicle(stretcher)
 
     -- Vérifier qu'on a trouvé un véhicule compatible sans brancard déjà rangé
     if not closestAmbulance then
-        ESX.ShowNotification('~r~Aucun véhicule compatible libre à proximité')
+        ESX.ShowNotification(_U('no_compatible_vehicle'))
         return
     end
 
@@ -47,7 +47,7 @@ function StoreStretcherInVehicle(stretcher)
 
     -- Vérification de sécurité : s'assurer que les données existent
     if not vehicleData or not vehicleData.offset or not vehicleData.rotation then
-        ESX.ShowNotification('~r~Erreur : configuration du véhicule invalide')
+        ESX.ShowNotification(_U('invalid_vehicle_config'))
         return
     end
 
@@ -76,10 +76,10 @@ function StoreStretcherInVehicle(stretcher)
 
     -- Vérifier qu'on a bien obtenu le contrôle
     if not NetworkHasControlOfEntity(stretcher) then
-        ESX.ShowNotification('~r~Impossible de prendre le contrôle du brancard')
+        ESX.ShowNotification(_U('no_network_control'))
         return
     else
-        ESX.ShowNotification('~g~Contrôle du brancard obtenu')
+        ESX.ShowNotification(_U('network_control_success'))
     end
 
     -- Si le joueur porte le brancard, le détacher d'abord
@@ -146,5 +146,5 @@ function StoreStretcherInVehicle(stretcher)
     local stretcherNetId = NetworkGetNetworkIdFromEntity(stretcher)
     Entity(closestAmbulance).state:set('storedStretcherNetId', stretcherNetId, true)
 
-    ESX.ShowNotification('~g~Brancard rangé dans le véhicule')
+    ESX.ShowNotification(_U('stretcher_stored'))
 end

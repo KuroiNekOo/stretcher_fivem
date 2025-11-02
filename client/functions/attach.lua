@@ -20,10 +20,10 @@ function AttachExistingStretcherToPlayer(stretcherEntity)
 
     -- Vérifier qu'on a bien obtenu le contrôle
     if not NetworkHasControlOfEntity(stretcherEntity) then
-        ESX.ShowNotification('~r~Impossible de prendre le contrôle du brancard')
+        ESX.ShowNotification(_U('no_network_control'))
         return
     else
-        ESX.ShowNotification('~g~Contrôle du brancard obtenu')
+        ESX.ShowNotification(_U('network_control_success'))
     end
 
     -- Définir l'entité comme mission pour pouvoir la gérer
@@ -100,7 +100,7 @@ function AttachStretcherToPlayer(vehicle)
     -- Libérer le modèle de la mémoire vive du client
     SetModelAsNoLongerNeeded(modelHash)
 
-    ESX.ShowNotification('~g~Vous poussez le brancard. Appuyez sur E pour vous arrêter de pousser')
+    ESX.ShowNotification(_U('pushing_stretcher'))
 end
 
 -- Fonction pour détacher le brancard et lui rendre sa physique

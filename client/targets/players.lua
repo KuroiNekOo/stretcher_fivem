@@ -60,7 +60,7 @@ exports.ox_target:addGlobalPlayer({
                 local stretcherNetId = NetworkGetNetworkIdFromEntity(closestStretcher)
                 TriggerServerEvent('esx_stretcher:requestPutPlayerOnStretcher', targetServerId, stretcherNetId)
             else
-                ESX.ShowNotification('~r~Aucun brancard libre à proximité')
+                ESX.ShowNotification(_U('no_free_stretcher_nearby'))
             end
         end
     }

@@ -114,10 +114,10 @@ exports.ox_target:addModel({Config.StretcherModel}, {
 
             -- Vérifier qu'on a bien obtenu le contrôle
             if not NetworkHasControlOfEntity(stretcher) then
-                ESX.ShowNotification('~r~Impossible de prendre le contrôle du brancard')
+                ESX.ShowNotification(_U('no_network_control'))
                 return
             else
-                ESX.ShowNotification('~g~Contrôle du brancard obtenu')
+                ESX.ShowNotification(_U('network_control_success'))
             end
 
             -- Récupérer le véhicule source depuis le statebag du brancard

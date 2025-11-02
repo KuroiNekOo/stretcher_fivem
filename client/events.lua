@@ -4,7 +4,7 @@ RegisterNetEvent('esx_stretcher:forcePutOnStretcher', function(stretcherNetId)
     local stretcher = NetworkGetEntityFromNetworkId(stretcherNetId)
 
     if not stretcher or not DoesEntityExist(stretcher) then
-        ESX.ShowNotification('~r~Erreur : brancard introuvable')
+        ESX.ShowNotification(_U('stretcher_not_found'))
         return
     end
 

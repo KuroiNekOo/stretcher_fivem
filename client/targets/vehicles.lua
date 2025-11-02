@@ -28,7 +28,7 @@ exports.ox_target:addModel(ambulanceModels, {
             end
 
             if not NetworkHasControlOfEntity(vehicle) then
-                ESX.ShowNotification('~r~Impossible 1 (pas de contrôle réseau)')
+                ESX.ShowNotification(_U('no_vehicle_control'))
                 return
             end
 
@@ -52,7 +52,7 @@ exports.ox_target:addModel(ambulanceModels, {
                     end
 
                     if not NetworkHasControlOfEntity(storedStretcher) then
-                        ESX.ShowNotification('~r~Impossible 2 (pas de contrôle réseau)')
+                        ESX.ShowNotification(_U('no_stored_stretcher_control'))
                         return
                     end
 

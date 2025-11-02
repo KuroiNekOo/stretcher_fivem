@@ -1,5 +1,8 @@
 Config = {}
 
+-- Langue utilisée pour les notifications
+Config.Locale = 'fr'
+
 -- Modèle de brancard (don-emsprops)
 Config.StretcherModel = 'strykergurney'
 

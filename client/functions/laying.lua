@@ -18,10 +18,10 @@ function LayOnStretcher(stretcher)
 
     -- Vérifier qu'on a bien obtenu le contrôle
     if not NetworkHasControlOfEntity(stretcher) then
-        ESX.ShowNotification('~r~Impossible de prendre le contrôle du brancard')
+        ESX.ShowNotification(_U('no_network_control'))
         return
     else
-        ESX.ShowNotification('~g~Contrôle du brancard obtenu')
+        ESX.ShowNotification(_U('network_control_success'))
     end
 
     -- Marquer le brancard comme occupé
@@ -59,7 +59,7 @@ function LayOnStretcher(stretcher)
     AttachEntityToEntity(playerPed, stretcher, 0, 0.0, 0.0, 2.1, 0.0, 0.0, 90.0, false, false, false, false, 2, true)
 
     isLayingOnStretcher = true
-    ESX.ShowNotification('~g~Vous êtes couché sur le brancard. Appuyez sur E pour vous relever')
+    ESX.ShowNotification(_U('laying_on_stretcher'))
 end
 
 -- Fonction pour se relever du brancard
@@ -75,7 +75,7 @@ function GetUpFromStretcher()
     local storedInVehicleNetId = Entity(layingStretcherObject).state.storedInVehicleNetId
 
     if storedInVehicleNetId then
-      ESX.ShowNotification('~r~Vous ne pouvez pas vous relever, le brancard est dans un véhicule')
+      ESX.ShowNotification(_U('cannot_get_up_stored'))
       return
     end
 
@@ -115,5 +115,5 @@ function GetUpFromStretcher()
     isLayingOnStretcher = false
     layingStretcherObject = nil
 
-    ESX.ShowNotification('~g~Vous vous êtes relevé')
+    ESX.ShowNotification(_U('got_up_from_stretcher'))
 end
