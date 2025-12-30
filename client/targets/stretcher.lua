@@ -126,16 +126,22 @@ exports.ox_target:addModel({Config.StretcherModel}, {
                 return
             end
 
+            -- Si quelqu'un est couché sur le brancard, le forcer à se lever
+            local occupiedByServerId = Entity(stretcher).state.occupiedByServerId
+            if occupiedByServerId then
+                TriggerServerEvent('esx_stretcher:requestRemovePlayerFromStretcher', occupiedByServerId)
+                Wait(100)
+            end
+
             -- Récupérer le véhicule source depuis le statebag du brancard
             local vehicleNetId = Entity(stretcher).state.sourceVehicleNetId
             if vehicleNetId then
                 local sourceVehicle = NetworkGetEntityFromNetworkId(vehicleNetId)
                 -- Libérer le véhicule source si il existe encore
                 if sourceVehicle and DoesEntityExist(sourceVehicle) then
-                    -- Demander le contrôle du véhicule source
-                    if RequestEntityControl(sourceVehicle, Config.NetworkTimeouts.vehicle) then
-                        Entity(sourceVehicle).state:set('hasStretcherOut', false, true)
-                    end
+                    -- Demander le contrôle du véhicule source et nettoyer le statebag
+                    RequestEntityControl(sourceVehicle, Config.NetworkTimeouts.vehicle)
+                    Entity(sourceVehicle).state:set('hasStretcherOut', false, true)
                 end
             end
 
@@ -145,20 +151,21 @@ exports.ox_target:addModel({Config.StretcherModel}, {
                 local storedVehicle = NetworkGetEntityFromNetworkId(storedInVehicleNetId)
                 -- Nettoyer le statebag du véhicule de stockage
                 if storedVehicle and DoesEntityExist(storedVehicle) then
-                    -- Demander le contrôle du véhicule de stockage
-                    if RequestEntityControl(storedVehicle, Config.NetworkTimeouts.vehicle) then
-                        Entity(storedVehicle).state:set('storedStretcherNetId', nil, true)
-                    end
+                    -- Demander le contrôle du véhicule de stockage et nettoyer le statebag
+                    RequestEntityControl(storedVehicle, Config.NetworkTimeouts.vehicle)
+                    Entity(storedVehicle).state:set('storedStretcherNetId', nil, true)
                 end
             end
 
             -- Si c'est le brancard du joueur, réinitialiser les variables locales
             if stretcherObject == stretcher then
+                ClearPedTasks(PlayerPedId())
                 stretcherObject = nil
                 isCarryingStretcher = false
             end
 
             DeleteEntity(stretcher)
+            ESX.ShowNotification('~g~Brancard retiré')
         end
     }
 })
