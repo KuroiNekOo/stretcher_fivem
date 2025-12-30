@@ -5,6 +5,11 @@ exports.ox_target:addModel({Config.StretcherModel}, {
         icon = 'fas fa-hand-paper',
         label = 'Pousser le brancard',
         canInteract = function(entity, distance, data)
+            -- Vérifier que le joueur a un job autorisé
+            if not HasAllowedJob() then
+                return false
+            end
+
             -- Vérifier si le brancard est rangé dans un véhicule
             -- ~= (not equal) (différent de nil)
             local isStored = Entity(entity).state.storedInVehicleNetId ~= nil
@@ -25,6 +30,11 @@ exports.ox_target:addModel({Config.StretcherModel}, {
         icon = 'fas fa-inbox',
         label = 'Ranger le brancard',
         canInteract = function(entity, distance, data)
+            -- Vérifier que le joueur a un job autorisé
+            if not HasAllowedJob() then
+                return false
+            end
+
             -- Vérifier si le brancard est déjà rangé dans un véhicule
             local isStored = Entity(entity).state.storedInVehicleNetId ~= nil
 
@@ -66,6 +76,11 @@ exports.ox_target:addModel({Config.StretcherModel}, {
         icon = 'fas fa-user-minus',
         label = 'Retirer du brancard',
         canInteract = function(entity, distance, data)
+            -- Vérifier que le joueur a un job autorisé
+            if not HasAllowedJob() then
+                return false
+            end
+
             -- Vérifier si le brancard est rangé
             local isStored = Entity(entity).state.storedInVehicleNetId ~= nil
 
@@ -92,6 +107,10 @@ exports.ox_target:addModel({Config.StretcherModel}, {
         name = 'remove_stretcher',
         icon = 'fas fa-trash',
         label = 'Retirer le brancard',
+        canInteract = function(entity, distance, data)
+            -- Vérifier que le joueur a un job autorisé
+            return HasAllowedJob()
+        end,
         onSelect = function(data)
             local stretcher = data.entity
             if not stretcher or not DoesEntityExist(stretcher) then return end

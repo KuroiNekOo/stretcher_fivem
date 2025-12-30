@@ -5,6 +5,11 @@ exports.ox_target:addModel(ambulanceModels, {
         icon = 'fas fa-bed',
         label = 'Sortir le brancard',
         canInteract = function(entity, distance, data)
+          -- Vérifier que le joueur a un job autorisé
+          if not HasAllowedJob() then
+              return false
+          end
+
           -- Vérifier si un brancard est déjà sorti de ce véhicule
           local hasStretcherOut = Entity(entity).state.hasStretcherOut or false
           -- Vérifier si un brancard est rangé dans ce véhicule

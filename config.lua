@@ -3,6 +3,13 @@ Config = {}
 -- Langue utilisée pour les notifications
 Config.Locale = 'fr'
 
+-- Jobs autorisés à utiliser le brancard (mettre un joueur sur le brancard, etc.)
+-- Mettre à {} (table vide) pour autoriser tout le monde
+Config.AllowedJobs = {
+    'ambulance',
+    'police'
+}
+
 -- Modèle de brancard (don-emsprops)
 Config.StretcherModel = 'strykergurney'
 

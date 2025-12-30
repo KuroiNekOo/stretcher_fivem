@@ -1,6 +1,27 @@
 -- Importer le framework ESX
 ESX = exports['es_extended']:getSharedObject()
 
+-- Fonction utilitaire pour vérifier si le joueur a un job autorisé
+function HasAllowedJob()
+    -- Si la table est vide, tout le monde est autorisé
+    if #Config.AllowedJobs == 0 then
+        return true
+    end
+
+    local playerData = ESX.GetPlayerData()
+    if not playerData or not playerData.job then
+        return false
+    end
+
+    for _, jobName in ipairs(Config.AllowedJobs) do
+        if playerData.job.name == jobName then
+            return true
+        end
+    end
+
+    return false
+end
+
 -- Variables globales (accessibles dans tous les fichiers client)
 stretcherObject = nil             -- Référence à l'objet brancard porté par le joueur
 isCarryingStretcher = false       -- Indique si le joueur porte le brancard

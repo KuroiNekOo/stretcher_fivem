@@ -5,6 +5,11 @@ exports.ox_target:addGlobalPlayer({
         icon = 'fas fa-bed',
         label = 'Mettre sur le brancard',
         canInteract = function(entity, distance, data)
+            -- Vérifier que le joueur a un job autorisé
+            if not HasAllowedJob() then
+                return false
+            end
+
             -- Vérifier qu'il y a un brancard libre à proximité (moins de 5m)
             local playerCoords = GetEntityCoords(PlayerPedId())
 
