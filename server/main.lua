@@ -1,13 +1,20 @@
 ESX = exports['es_extended']:getSharedObject()
 
 -- Event pour mettre un joueur de force sur le brancard
-RegisterNetEvent('esx_stretcher:requestPutPlayerOnStretcher', function(targetServerId, stretcherNetId)
+RegisterNetEvent('esx_stretcher:requestPutPlayerOnStretcher', function(targetServerId, stretcherNetId, previousOccupantServerId)
     local source = source
 
     -- Validation : vérifier que le joueur ciblé existe
     if not targetServerId or GetPlayerPing(targetServerId) == 0 then
         TriggerClientEvent('esx:showNotification', source, '~r~Joueur introuvable')
         return
+    end
+
+    -- Si un ancien occupant existe, le forcer à se lever d'abord
+    if previousOccupantServerId and GetPlayerPing(previousOccupantServerId) > 0 then
+        TriggerClientEvent('esx_stretcher:forceRemoveFromStretcher', previousOccupantServerId)
+        -- Petit délai pour laisser le temps à l'ancien occupant de se lever
+        Wait(100)
     end
 
     -- Trigger l'event client sur le joueur ciblé pour le forcer à se coucher
