@@ -22,6 +22,12 @@ function HasAllowedJob()
     return false
 end
 
+-- Fonction utilitaire pour vérifier si le joueur peut utiliser les targets du brancard
+-- Retourne false si le joueur est couché sur un brancard ou en porte un
+function CanUseStretcherTargets()
+    return not isLayingOnStretcher and not isCarryingStretcher
+end
+
 -- Variables globales (accessibles dans tous les fichiers client)
 stretcherObject = nil             -- Référence à l'objet brancard porté par le joueur
 isCarryingStretcher = false       -- Indique si le joueur porte le brancard

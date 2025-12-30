@@ -5,6 +5,11 @@ exports.ox_target:addModel({Config.StretcherModel}, {
         icon = 'fas fa-hand-paper',
         label = 'Pousser le brancard',
         canInteract = function(entity, distance, data)
+            -- Bloquer si le joueur est sur un brancard ou en porte un
+            if not CanUseStretcherTargets() then
+                return false
+            end
+
             -- Vérifier que le joueur a un job autorisé
             if not HasAllowedJob() then
                 return false
@@ -30,6 +35,11 @@ exports.ox_target:addModel({Config.StretcherModel}, {
         icon = 'fas fa-inbox',
         label = 'Ranger le brancard',
         canInteract = function(entity, distance, data)
+            -- Bloquer si le joueur est sur un brancard ou en porte un
+            if not CanUseStretcherTargets() then
+                return false
+            end
+
             -- Vérifier que le joueur a un job autorisé
             if not HasAllowedJob() then
                 return false
@@ -54,14 +64,19 @@ exports.ox_target:addModel({Config.StretcherModel}, {
         icon = 'fas fa-bed',
         label = 'Se coucher sur le brancard',
         canInteract = function(entity, distance, data)
+            -- Bloquer si le joueur est sur un brancard ou en porte un
+            if not CanUseStretcherTargets() then
+                return false
+            end
+
             -- Vérifier si le brancard est rangé
             local isStored = Entity(entity).state.storedInVehicleNetId ~= nil
 
             -- Vérifier si quelqu'un est déjà couché sur le brancard
             local occupiedByServerId = Entity(entity).state.occupiedByServerId
 
-            -- On peut se coucher si: pas rangé, personne dessus, et on n'est pas déjà couché ailleurs
-            return not isStored and not occupiedByServerId and not isLayingOnStretcher
+            -- On peut se coucher si: pas rangé et personne dessus
+            return not isStored and not occupiedByServerId
         end,
         onSelect = function(data)
             local stretcher = data.entity
@@ -76,6 +91,11 @@ exports.ox_target:addModel({Config.StretcherModel}, {
         icon = 'fas fa-user-minus',
         label = 'Retirer du brancard',
         canInteract = function(entity, distance, data)
+            -- Bloquer si le joueur est sur un brancard ou en porte un
+            if not CanUseStretcherTargets() then
+                return false
+            end
+
             -- Vérifier que le joueur a un job autorisé
             if not HasAllowedJob() then
                 return false
@@ -108,6 +128,11 @@ exports.ox_target:addModel({Config.StretcherModel}, {
         icon = 'fas fa-trash',
         label = 'Retirer le brancard',
         canInteract = function(entity, distance, data)
+            -- Bloquer si le joueur est sur un brancard ou en porte un
+            if not CanUseStretcherTargets() then
+                return false
+            end
+
             -- Vérifier que le joueur a un job autorisé
             return HasAllowedJob()
         end,

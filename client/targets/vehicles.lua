@@ -5,6 +5,11 @@ exports.ox_target:addModel(ambulanceModels, {
         icon = 'fas fa-bed',
         label = 'Sortir le brancard',
         canInteract = function(entity, distance, data)
+          -- Bloquer si le joueur est sur un brancard ou en porte un
+          if not CanUseStretcherTargets() then
+              return false
+          end
+
           -- Vérifier que le joueur a un job autorisé
           if not HasAllowedJob() then
               return false
@@ -76,6 +81,11 @@ exports.ox_target:addModel(ambulanceModels, {
         icon = 'fas fa-trash',
         label = 'Retirer le brancard',
         canInteract = function(entity, distance, data)
+            -- Bloquer si le joueur est sur un brancard ou en porte un
+            if not CanUseStretcherTargets() then
+                return false
+            end
+
             -- Vérifier que le joueur a un job autorisé
             if not HasAllowedJob() then
                 return false

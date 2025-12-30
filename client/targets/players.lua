@@ -5,6 +5,11 @@ exports.ox_target:addGlobalPlayer({
         icon = 'fas fa-bed',
         label = 'Mettre sur le brancard',
         canInteract = function(entity, distance, data)
+            -- Bloquer si le joueur est sur un brancard ou en porte un
+            if not CanUseStretcherTargets() then
+                return false
+            end
+
             -- Vérifier que le joueur a un job autorisé
             if not HasAllowedJob() then
                 return false
