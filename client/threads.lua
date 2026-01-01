@@ -27,14 +27,16 @@ CreateThread(function()
     end
 end)
 
--- Thread optimisé pour détecter la touche E
+-- Thread optimisé pour détecter la touche E et maintenir l'animation
 CreateThread(function()
     while true do
 
         -- Passage à un délai court si le joueur porte le brancard OU est couché dessus
-        -- Pourquoi ? Pour réagir rapidement à l'appui de la touche E
+        -- Pourquoi ? Pour réagir rapidement à l'appui de la touche E et relancer l'animation si annulée
         if isCarryingStretcher or isLayingOnStretcher then
             Wait(5)
+
+            local playerPed = PlayerPedId()
 
             if IsControlJustPressed(0, 38) then -- Touche E
                 if isCarryingStretcher then
@@ -43,6 +45,17 @@ CreateThread(function()
                 elseif isLayingOnStretcher then
                     -- Se relever du brancard
                     GetUpFromStretcher()
+                end
+            end
+
+            -- Vérifier si l'animation de poussée a été annulée (par X ou autre)
+            -- Si le joueur porte toujours le brancard mais ne joue plus l'animation, la relancer
+            if isCarryingStretcher then
+                local animDict = Config.PushAnimation.dict
+                local animName = Config.PushAnimation.anim
+
+                if not IsEntityPlayingAnim(playerPed, animDict, animName, 3) then
+                    PlayPushAnimation()
                 end
             end
 
