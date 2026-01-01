@@ -108,6 +108,9 @@ end
 function DetachStretcherFromPlayer()
     if not stretcherObject or not DoesEntityExist(stretcherObject) then return end
 
+    -- IMPORTANT : Désactiver le flag EN PREMIER pour éviter que le thread relance l'animation
+    isCarryingStretcher = false
+
     local playerPed = PlayerPedId()
 
     -- Arrêter l'animation de poussée
@@ -131,7 +134,4 @@ function DetachStretcherFromPlayer()
     -- Le second paramètre permet de modifier l'état de la physique de l'objet
     -- Le troisième paramètre permet de modifier l'état de la collision de l'objet
     SetEntityCollision(stretcherObject, true, true)
-
-    -- Réinitialiser la variable de portage
-    isCarryingStretcher = false
 end

@@ -27,30 +27,27 @@ CreateThread(function()
     end
 end)
 
--- Thread optimisé pour détecter la touche E et maintenir l'animation
+-- Commande pour lâcher le brancard / se lever (détection native, jamais ratée)
+RegisterCommand('stretcher_release', function()
+    if isCarryingStretcher then
+        DetachStretcherFromPlayer()
+    elseif isLayingOnStretcher then
+        GetUpFromStretcher()
+    end
+end, false)
+
+-- Associer la touche E par défaut (le joueur peut la changer dans Paramètres > Raccourcis > FiveM)
+RegisterKeyMapping('stretcher_release', 'Lâcher/Se lever du brancard', 'keyboard', 'E')
+
+-- Thread pour maintenir l'animation de poussée (si annulée par X, ragdoll, etc.)
 CreateThread(function()
     while true do
+        if isCarryingStretcher then
+            Wait(100) -- 100ms suffit pour vérifier l'animation
 
-        -- Passage à un délai court si le joueur porte le brancard OU est couché dessus
-        -- Pourquoi ? Pour réagir rapidement à l'appui de la touche E et relancer l'animation si annulée
-        if isCarryingStretcher or isLayingOnStretcher then
-            Wait(5)
-
-            local playerPed = PlayerPedId()
-
-            if IsControlJustPressed(0, 38) then -- Touche E
-                if isCarryingStretcher then
-                    -- Détacher le brancard que le joueur porte
-                    DetachStretcherFromPlayer()
-                elseif isLayingOnStretcher then
-                    -- Se relever du brancard
-                    GetUpFromStretcher()
-                end
-            end
-
-            -- Vérifier si l'animation de poussée a été annulée (par X ou autre)
-            -- Si le joueur porte toujours le brancard mais ne joue plus l'animation, la relancer
+            -- Re-vérifier après le Wait pour éviter des problèmes de timing
             if isCarryingStretcher then
+                local playerPed = PlayerPedId()
                 local animDict = Config.PushAnimation.dict
                 local animName = Config.PushAnimation.anim
 
@@ -58,11 +55,9 @@ CreateThread(function()
                     PlayPushAnimation()
                 end
             end
-
         else
             Wait(1000)
         end
-
     end
 end)
 
